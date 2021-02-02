@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter import filedialog
+
 from Modules.VirusAPI import scan
 from OptionBox import option_box
 
