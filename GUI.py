@@ -3,8 +3,9 @@ from tkinter import filedialog
 
 from Modules.VirusAPI import scan
 from OptionBox import option_box
+from os import remove
 
-filename = ''
+filePath = ''
 func_selected = ''
 
 
@@ -18,32 +19,46 @@ def option_selector():
                                frame=False,
                                entry=False,
                                t=False)
-    if filename != '':
-        func_selected(file_path=filename)
+    clear_entry_box()
+    if filePath != '':
+        func_selected(file_path=filePath)
     else:
         func_selected()
 
 
 # File Browse Function
 def browse_function():
-    global filename
-    filename = filedialog.askopenfilename()
+    global filePath
+    filePath = filedialog.askopenfilename()
     try:
-        enter_path.insert(tk.END, filename)
-        print(filename)
+        enter_path.insert(tk.END, filePath)
+        print(filePath)
     except NameError:
         pass
 
 
 # Scan Function
 def scan_call():
-    scan(filename)
+    scan(filePath)
+    clear_entry_box()
+
+
+# Delete Function
+def delete_call():
+    remove(filePath)
+    print(f'Successfully deleted {filePath}')
+
+
+# Clear entry box
+def clear_entry_box():
+    sentence = enter_path.get()
+    enter_path.delete(0, len(sentence))
 
 
 window = tk.Tk()
 # Background of window
 window.configure(background='#161b22')
-window.geometry("860x80")
+window.geometry("860x140")
 # Title of the window
 window.title('VFree Antivirus')
 # Enter file path label
@@ -85,10 +100,10 @@ button2 = tk.Button(window,
                     activeforeground='white',
                     activebackground='#32373e',
                     width=40)
-button2.place(rely='0.5', relx='0.02')
+button2.place(rely='0.35', relx='0.02')
 
 # Encrypt Button
-button2 = tk.Button(window,
+button3 = tk.Button(window,
                     text="Encrypt / Decrypt",
                     font="Helvetica 13 bold",
                     command=option_selector,
@@ -97,5 +112,16 @@ button2 = tk.Button(window,
                     activeforeground='white',
                     activebackground='#32373e',
                     width=40)
-button2.place(rely='0.5', relx='0.51')
+button3.place(rely='0.35', relx='0.51')
+
+button4 = tk.Button(window,
+                    text="Delete",
+                    font="Helvetica 13 bold",
+                    command=delete_call,
+                    background='#21262d',
+                    foreground='white',
+                    activeforeground='white',
+                    activebackground='#32373e',
+                    width=40)
+button4.place(rely='0.7', relx='0.25')
 window.mainloop()
